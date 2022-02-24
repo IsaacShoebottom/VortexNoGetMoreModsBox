@@ -286,17 +286,27 @@ This directory exists only to make the "default" option available without hard-c
 #More Mods Remover
 $MoreModsRemover = @"
 #more-mods-container {
-    transform: scale(0%);
+    display: none;
 }
 "@
 
 #Remove Nexus Nags
 $NagRemover = @"
 .nexus-main-banner {
-    transform: scale(0%);
+    display: none;
 }
 .nexus-download-banner {
-    transform: scale(0%);
+    display: none;
+}
+#Go\ Premium {
+    display: none;
+}
+"@
+
+#Remove Collections Tab
+$RemoveCollections = @"
+#Collections {
+    display: none;
 }
 "@
 
@@ -380,6 +390,16 @@ if (Test-Path -path $VortexThemeFolder) {
         Write-Host ""
         Write-Host $NagRemover
         $NagRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+    }
+
+    Write-Host ""
+    Write-Host "Would you like to remove the collections button"
+    $CollectionsSelection = Read-Host -prompt "(Y/N) or (y/n)"
+
+    If ($CollectionsSelection -eq "Y" -or $CollectionsSelection -eq "y") {
+        Write-Host ""
+        Write-Host $RemoveCollections
+        $RemoveCollections | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
     }
         
     Write-Host ""
