@@ -1,4 +1,4 @@
-# Remove annoyance script v1.0.0
+# Remove annoyance script v1.1.1
 # For Vortex 1.5.4 / 1.5.5
 
 # Compact Style String
@@ -317,11 +317,11 @@ if (Test-Path -path $VortexThemeFolder) {
     Clear-Host
 
     if ($ThemeSelection -eq 4) {
-    Write-Host "Enter your custom theme name exactly, it will not work."
+    Write-Host "Enter your custom theme name exactly, it will only work if the wording is exact"
     Write-Host "If the theme does not exist you will be reprompted. If you do not have one installed close the window"
     $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
     $TempThemeFolder = $VortexThemeFolder + $ThemeName
-        while (((Test-Path -path $TempThemeFolder) -eq $false) -or ($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Match ".")) {
+        while (((Test-Path -path $TempThemeFolder) -eq $false) -or ($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
             $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
             $TempThemeFolder = $VortexThemeFolder + $ThemeName
         }
@@ -331,7 +331,7 @@ if (Test-Path -path $VortexThemeFolder) {
 
     Clear-Host
 
-    if ($ThemeName -eq "" -or $ThemeName -eq $null -or $ThemeName -Match ".") {
+    if (($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
         $ThemeName = "NoGetMoreMods"
     }
 

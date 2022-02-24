@@ -11,3 +11,6 @@ To apply the edit to whichever theme you use, you must go into vortex settings, 
 ```
 
 This should scale the element down to zero and should pretty much solve the issue. If there are any new developments I'll update this repo.
+
+# Script
+The included powershell script will install the theme, remove the button and ask you if you want to remove ads.
