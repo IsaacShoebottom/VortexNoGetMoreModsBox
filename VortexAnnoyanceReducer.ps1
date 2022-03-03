@@ -1,5 +1,5 @@
-# Remove annoyance script v1.1.1
-# For Vortex 1.5.4 / 1.5.5
+# Remove annoyance script v1.2.0
+# For Vortex 1.5.4 / 1.5.5 / 1.5.6
 
 # Compact Style String
 $CompactStyle = @"
@@ -325,10 +325,13 @@ $NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked ins
         $ThemeDummyFile = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/default/dummy.txt' | Select-Object -Expand Content
 
         #Mods Remover
+        $MoreModsRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/MoreModsRemover.css' | Select-Object -Expand Content
 
         #Remove Nag/Ads
+        $NagRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/NagRemover.css' | Select-Object -Expand Content
 
         #Remove Collection
+        $RemoveCollections = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/RemoveCollection.css' | Select-Object -Expand Content
     }
 
 
