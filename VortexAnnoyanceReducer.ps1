@@ -310,6 +310,28 @@ $RemoveCollections = @"
 }
 "@
 
+$NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked install (Most recent versions of default themes/patches)?"
+
+    If ($NetworkInstallChoice -eq "Y" -or $CollectionsSelection -eq "y") {
+        # Compact
+        $CompactStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/style.scss' | Select-Object -Expand Content
+        $CompactVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/variables.scss' | Select-Object -Expand Content
+
+        #Contrast
+        $ContrastStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/style.scss' | Select-Object -Expand Content
+        $ContrastVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/variables.scss' | Select-Object -Expand Content
+
+        #Default
+        $ThemeDummyFile = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/default/dummy.txt' | Select-Object -Expand Content
+
+        #Mods Remover
+
+        #Remove Nag/Ads
+
+        #Remove Collection
+    }
+
+
 $VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
 if (Test-Path -path $VortexThemeFolder) {
     Do {
