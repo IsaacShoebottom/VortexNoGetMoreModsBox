@@ -1,4 +1,4 @@
-# Remove annoyance script v1.2.0
+# Remove annoyance script v1.2.1
 # For Vortex 1.5.4 / 1.5.5 / 1.5.6
 
 # Compact Style String
@@ -354,6 +354,14 @@ if (Test-Path -path $VortexThemeFolder) {
     if ($ThemeSelection -eq 4) {
     Write-Host "Enter your custom theme name exactly, it will only work if the wording is exact"
     Write-Host "If the theme does not exist you will be reprompted. If you do not have one installed close the window"
+    Write-Host "Here is a listing of all your current custom themes. Type it exactly, including capitalization."
+    Write-Host ""
+    Write-Host "Theme Folder:"
+    Write-Host $VortexThemeFolder
+    Write-Host ""
+    Write-Host "Theme Names:"
+    Get-ChildItem $VortexThemeFolder -Name
+    Write-Host ""
     $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
     $TempThemeFolder = $VortexThemeFolder + $ThemeName
         while (((Test-Path -path $TempThemeFolder) -eq $false) -or ($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
