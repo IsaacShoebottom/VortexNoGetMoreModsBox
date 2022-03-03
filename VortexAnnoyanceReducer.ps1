@@ -310,7 +310,7 @@ $RemoveCollections = @"
 }
 "@
 
-$NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked install (Most recent versions of default themes/patches)?"
+$NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked install (Most recent versions of default themes/patches) (Y/N) or (y/n)"
 
     If ($NetworkInstallChoice -eq "Y" -or $CollectionsSelection -eq "y") {
         # Compact
@@ -372,7 +372,7 @@ if (Test-Path -path $VortexThemeFolder) {
 
     $ThemeFolder = $VortexThemeFolder + $ThemeName
     $ThemeStyleFile = $ThemeFolder + "\style.scss"
-    $ThemeVariableFile = $ThemeFolder + "\variable.scss"
+    $ThemeVariableFile = $ThemeFolder + "\variables.scss"
     $ThemeDummyFile = $ThemeFolder + "\dummy.txt"
 
 
