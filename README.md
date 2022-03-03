@@ -6,7 +6,7 @@ To apply the edit to whichever theme you use, you must go into vortex settings, 
 
 ```css
 #more-mods-container {
-    transform: scale(0%);
+    scale: none;
 }
 ```
 
