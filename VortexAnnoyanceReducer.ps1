@@ -1,5 +1,6 @@
-# Remove annoyance script v1.2.1
+# Remove annoyance script v1.2.2
 # For Vortex 1.5.4 / 1.5.5 / 1.5.6
+# Converted to executable with ps2exe (WIN-PS2EXE) (https://github.com/MScholtes/PS2EXE)
 
 # Compact Style String
 $CompactStyle = @"
@@ -312,7 +313,10 @@ $RemoveCollections = @"
 
 $NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked install (Most recent versions of default themes/patches) (Y/N) or (y/n)"
 
-    If ($NetworkInstallChoice -eq "Y" -or $CollectionsSelection -eq "y") {
+    If ($NetworkInstallChoice -eq "Y" -or $NetworkInstallChoice -eq "y") {
+        # Use TSL 1.2
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
         # Compact
         $CompactStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/style.scss' | Select-Object -Expand Content
         $CompactVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/variables.scss' | Select-Object -Expand Content
@@ -335,7 +339,16 @@ $NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked ins
     }
 
 
-$VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
+
+$SharedInstallChoice = Read-Host -prompt "Is your Vortex a shared install? (Default is no) (Y/N) or (y/n)"
+
+if ($SharedInstallChoice -eq "Y" -or $SharedInstallChoice -eq "y") {
+    $VortexThemeFolder = $env:PROGRAMDATA + "\Vortex\themes\"
+}
+else {
+    $VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
+}
+
 if (Test-Path -path $VortexThemeFolder) {
     Do {
         Write-Host "Please pick your theme"
@@ -440,5 +453,5 @@ if (Test-Path -path $VortexThemeFolder) {
     Read-Host
 
 } else {
-    Write-Host "Please make sure your vortex folder has a themes folder"
+    Write-Host "Please make sure your vortex install has a themes folder (try cloning a theme first)"
 }
