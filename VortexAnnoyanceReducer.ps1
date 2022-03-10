@@ -373,7 +373,7 @@ if (Test-Path -path $VortexThemeFolder) {
     Write-Host $VortexThemeFolder
     Write-Host ""
     Write-Host "Theme Names:"
-    Get-ChildItem $VortexThemeFolder -Name
+    Get-ChildItem $VortexThemeFolder -Directory -Name
     Write-Host ""
     $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
     $TempThemeFolder = $VortexThemeFolder + $ThemeName
