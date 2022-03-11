@@ -1,4 +1,4 @@
-# Remove annoyance script v1.2.2
+# Remove annoyance script v1.2.3
 # For Vortex 1.5.4 / 1.5.5 / 1.5.6
 # Converted to executable with ps2exe (WIN-PS2EXE) (https://github.com/MScholtes/PS2EXE)
 
