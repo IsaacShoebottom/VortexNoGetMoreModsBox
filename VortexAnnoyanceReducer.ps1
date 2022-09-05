@@ -1,5 +1,5 @@
-# Remove annoyance script v1.2.3
-# For Vortex 1.5.4 / 1.5.5 / 1.5.6
+# Remove annoyance script v1.2.4
+# For Vortex 1.5.4 to 1.6.8
 # Converted to executable with ps2exe (WIN-PS2EXE) (https://github.com/MScholtes/PS2EXE)
 
 # Compact Style String
@@ -349,6 +349,10 @@ else {
     $VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
 }
 
+if (-Not (Test-Path -path $VortexThemeFolder)) {
+    New-Item -ItemType "directory" -Path $VortexThemeFolder -Force | Out-Null
+}
+
 if (Test-Path -path $VortexThemeFolder) {
     Do {
         Write-Host "Please pick your theme"
@@ -450,8 +454,9 @@ if (Test-Path -path $VortexThemeFolder) {
         
     Write-Host ""
     Write-Host "Have a good day :)"
+    Write-Host "Hit X or Enter"
     Read-Host
 
 } else {
-    Write-Host "Please make sure your vortex install has a themes folder (try cloning a theme first)"
+    Write-Host "If you see this text, report it to me on nexus with details!"
 }
