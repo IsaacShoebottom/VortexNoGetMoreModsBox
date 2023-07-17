@@ -313,178 +313,180 @@ $RemoveCollections = @"
 
 $NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked install (Most recent versions of default themes/patches) (Y/N) or (y/n)"
 
-    If ($NetworkInstallChoice -eq "Y" -or $NetworkInstallChoice -eq "y") {
-        # Use TSL 1.2
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+If ($NetworkInstallChoice -eq "Y" -or $NetworkInstallChoice -eq "y") {
+	# Use TSL 1.2
+	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-        # Compact
-        $CompactStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/style.scss' | Select-Object -Expand Content
-        $CompactVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/variables.scss' | Select-Object -Expand Content
+	# Compact
+	$CompactStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/style.scss' | Select-Object -Expand Content
+	$CompactVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/compact/variables.scss' | Select-Object -Expand Content
 
-        #Contrast
-        $ContrastStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/style.scss' | Select-Object -Expand Content
-        $ContrastVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/variables.scss' | Select-Object -Expand Content
+	#Contrast
+	$ContrastStyle = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/style.scss' | Select-Object -Expand Content
+	$ContrastVariable = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/contrast/variables.scss' | Select-Object -Expand Content
 
-        #Default
-        $ThemeDummyFile = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/default/dummy.txt' | Select-Object -Expand Content
+	#Default
+	$ThemeDummyFile = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/default/dummy.txt' | Select-Object -Expand Content
 
-        #Mods Remover
-        $MoreModsRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/MoreModsRemover.css' | Select-Object -Expand Content
+	#Mods Remover
+	$MoreModsRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/MoreModsRemover.css' | Select-Object -Expand Content
 
-        #Remove Nag/Ads
-        $NagRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/NagRemover.css' | Select-Object -Expand Content
+	#Remove Nag/Ads
+	$NagRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/NagRemover.css' | Select-Object -Expand Content
 
-        #Remove Collection
-        $RemoveCollections = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/RemoveCollection.css' | Select-Object -Expand Content
-    }
+	#Remove Collection
+	$RemoveCollections = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/RemoveCollection.css' | Select-Object -Expand Content
+}
 
 
 
 $SharedInstallChoice = Read-Host -prompt "Is your Vortex a shared install? (Default is no) (Y/N) or (y/n)"
 
 if ($SharedInstallChoice -eq "Y" -or $SharedInstallChoice -eq "y") {
-    $VortexThemeFolder = $env:PROGRAMDATA + "\Vortex\themes\"
+	$VortexThemeFolder = $env:PROGRAMDATA + "\Vortex\themes\"
 }
 else {
-    $VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
+	$VortexThemeFolder = $env:APPDATA + "\Vortex\themes\"
 }
 
 if (-Not (Test-Path -path $VortexThemeFolder)) {
-    New-Item -ItemType "directory" -Path $VortexThemeFolder -Force | Out-Null
+	New-Item -ItemType "directory" -Path $VortexThemeFolder -Force | Out-Null
 }
 
 if (Test-Path -path $VortexThemeFolder) {
-    Do {
-        Write-Host "Please pick your theme"
-        Write-Host "Enter only a number 1, 2, 3 or 4"
-        Write-Host ""
-        Write-Host "1. Default"
-        Write-Host "2. Compact"
-        Write-Host "3. Contrast"
-        Write-Host "4. Append To Custom Theme"
-        Write-Host ""
-        $ThemeSelection = Read-Host -prompt "Your Selection"
-    } until(($ThemeSelection -eq 1) -or ($ThemeSelection -eq 2) -or ($ThemeSelection -eq 3) -or ($ThemeSelection -eq 4))
+	Do {
+		Write-Host "Please pick your theme"
+		Write-Host "Enter only a number 1, 2, 3 or 4"
+		Write-Host ""
+		Write-Host "1. Default"
+		Write-Host "2. Compact"
+		Write-Host "3. Contrast"
+		Write-Host "4. Append To Custom Theme"
+		Write-Host ""
+		$ThemeSelection = Read-Host -prompt "Your Selection"
+	} until(($ThemeSelection -eq 1) -or ($ThemeSelection -eq 2) -or ($ThemeSelection -eq 3) -or ($ThemeSelection -eq 4))
 
-    Clear-Host
+	Clear-Host
 
-    if ($ThemeSelection -eq 4) {
-    Write-Host "Enter your custom theme name exactly, it will only work if the wording is exact"
-    Write-Host "If the theme does not exist you will be reprompted. If you do not have one installed close the window"
-    Write-Host "Here is a listing of all your current custom themes. Type it exactly, including capitalization."
-    Write-Host ""
-    Write-Host "Theme Folder:"
-    Write-Host $VortexThemeFolder
-    Write-Host ""
-    Write-Host "Theme Names:"
-    Get-ChildItem $VortexThemeFolder -Directory -Name
-    Write-Host ""
-    $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
-    $TempThemeFolder = $VortexThemeFolder + $ThemeName
-        while (((Test-Path -path $TempThemeFolder) -eq $false) -or ($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
-            $ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
-            $TempThemeFolder = $VortexThemeFolder + $ThemeName
-        }
-    } else {
-        $ThemeName = Read-Host -prompt "Please enter the name for your theme (Default is `"NoGetMoreMods`")"
-    }
+	if ($ThemeSelection -eq 4) {
+		Write-Host "Enter your custom theme name exactly, it will only work if the wording is exact"
+		Write-Host "If the theme does not exist you will be reprompted. If you do not have one installed close the window"
+		Write-Host "Here is a listing of all your current custom themes. Type it exactly, including capitalization."
+		Write-Host ""
+		Write-Host "Theme Folder:"
+		Write-Host $VortexThemeFolder
+		Write-Host ""
+		Write-Host "Theme Names:"
+		Get-ChildItem $VortexThemeFolder -Directory -Name
+		Write-Host ""
+		$ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
+		$TempThemeFolder = $VortexThemeFolder + $ThemeName
+		while (((Test-Path -path $TempThemeFolder) -eq $false) -or ($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
+			$ThemeName = Read-Host -prompt "Please enter the name of the theme you want to modify)"
+			$TempThemeFolder = $VortexThemeFolder + $ThemeName
+		}
+	}
+	else {
+		$ThemeName = Read-Host -prompt "Please enter the name for your theme (Default is `"NoGetMoreMods`")"
+	}
 
-    Clear-Host
+	Clear-Host
 
-    if (($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
-        $ThemeName = "NoGetMoreMods"
-    }
+	if (($ThemeName -eq "") -or ($ThemeName -eq $null) -or ($ThemeName -Like "*.*")) {
+		$ThemeName = "NoGetMoreMods"
+	}
 
-    $ThemeFolder = $VortexThemeFolder + $ThemeName
-    $ThemeStyleFile = $ThemeFolder + "\style.scss"
-    $ThemeVariableFile = $ThemeFolder + "\variables.scss"
-    $ThemeDummyFile = $ThemeFolder + "\dummy.txt"
+	$ThemeFolder = $VortexThemeFolder + $ThemeName
+	$ThemeStyleFile = $ThemeFolder + "\style.scss"
+	$ThemeVariableFile = $ThemeFolder + "\variables.scss"
+	$ThemeDummyFile = $ThemeFolder + "\dummy.txt"
 
 
-    if ($ThemeSelection -ne 4) {
-        if (Test-Path -path $ThemeFolder) {
-            Remove-Item $ThemeFolder -Recurse
+	if ($ThemeSelection -ne 4) {
+		if (Test-Path -path $ThemeFolder) {
+			Remove-Item $ThemeFolder -Recurse
             
-        }
-        New-Item -ItemType "directory" -Path $ThemeFolder -Force
-        New-Item $ThemeStyleFile -Force
-        New-Item $ThemeVariableFile -Force
-    }
-    Write-Host ""
-    Write-Host $MoreModsRemover
+		}
+		New-Item -ItemType "directory" -Path $ThemeFolder -Force
+		New-Item $ThemeStyleFile -Force
+		New-Item $ThemeVariableFile -Force
+	}
+	Write-Host ""
+	Write-Host $MoreModsRemover
 
-    if ($ThemeSelection -eq 1) {
-        New-Item $ThemeDummyFile
-        $MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-        $RegularString | Out-File -FilePath $ThemeDummyFile -Append -Encoding UTF8
-    }
-    if ($ThemeSelection -eq 2) {
-        $CompactStyle | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-        $MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-        $CompactVariable | Out-File -FilePath $ThemeVariableFile -Append -Encoding UTF8
-    }
-    if ($ThemeSelection -eq 3) {
-        $ContrastStyle | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-        $MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-        $ContrastVariable | Out-File -FilePath $ThemeVariableFile -Append -Encoding UTF8
-    }
-    if ($ThemeSelection -eq 4) {
-        $MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-    }
+	if ($ThemeSelection -eq 1) {
+		New-Item $ThemeDummyFile
+		$MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+		$RegularString | Out-File -FilePath $ThemeDummyFile -Append -Encoding UTF8
+	}
+	if ($ThemeSelection -eq 2) {
+		$CompactStyle | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+		$MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+		$CompactVariable | Out-File -FilePath $ThemeVariableFile -Append -Encoding UTF8
+	}
+	if ($ThemeSelection -eq 3) {
+		$ContrastStyle | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+		$MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+		$ContrastVariable | Out-File -FilePath $ThemeVariableFile -Append -Encoding UTF8
+	}
+	if ($ThemeSelection -eq 4) {
+		$MoreModsRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+	}
 
-    Write-Host ""
-    Write-Host "Would you like to remove some nexus nag prompts (All go premium buttons)"
-    $NagSelection = Read-Host -prompt "(Y/N) or (y/n)"
+	Write-Host ""
+	Write-Host "Would you like to remove some nexus nag prompts (All go premium buttons)"
+	$NagSelection = Read-Host -prompt "(Y/N) or (y/n)"
 
-    If ($NagSelection -eq "Y" -or $NagRemover -eq "y") {
-        Write-Host ""
-        Write-Host $NagRemover
-        $NagRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-    }
+	If ($NagSelection -eq "Y" -or $NagRemover -eq "y") {
+		Write-Host ""
+		Write-Host $NagRemover
+		$NagRemover | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+	}
 
-    Write-Host ""
-    Write-Host "Would you like to remove the collections button"
-    $CollectionsSelection = Read-Host -prompt "(Y/N) or (y/n)"
+	Write-Host ""
+	Write-Host "Would you like to remove the collections button"
+	$CollectionsSelection = Read-Host -prompt "(Y/N) or (y/n)"
 
-    If ($CollectionsSelection -eq "Y" -or $CollectionsSelection -eq "y") {
-        Write-Host ""
-        Write-Host $RemoveCollections
-        $RemoveCollections | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
-    }
+	If ($CollectionsSelection -eq "Y" -or $CollectionsSelection -eq "y") {
+		Write-Host ""
+		Write-Host $RemoveCollections
+		$RemoveCollections | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
+	}
 
-    Write-Host ""
-    Write-Host "Finally, would you like to try and automatically set the selected theme as the default theme?"
-    $AutoSetThemeSelection = Read-Host -prompt "(Y/N) or (y/n)"
+	Write-Host ""
+	Write-Host "Finally, would you like to try and automatically set the selected theme as the default theme?"
+	$AutoSetThemeSelection = Read-Host -prompt "(Y/N) or (y/n)"
 
-    If ($AutoSetThemeSelection -eq "Y" -or $AutoSetThemeSelection -eq "y") {
-        $VortexExecutableLocation = "C:\Program Files\Black Tree Gaming Ltd\Vortex\Vortex.exe"
-        $VortexDefaultLocation = Test-Path -Path $VortexExecutableLocation -PathType Leaf
+	If ($AutoSetThemeSelection -eq "Y" -or $AutoSetThemeSelection -eq "y") {
+		$VortexExecutableLocation = "C:\Program Files\Black Tree Gaming Ltd\Vortex\Vortex.exe"
+		$VortexDefaultLocation = Test-Path -Path $VortexExecutableLocation -PathType Leaf
 
-        If (!$VortexDefaultLocation) {
-            Write-Host ""
-            Write-Host "Vortex is not installed in the default location. Please paste the location of your vortex executable. It should end in Vortex.exe"
-            $VortexExecutableLocation = Read-Host -Prompt "Paste Here"
+		If (!$VortexDefaultLocation) {
+			Write-Host ""
+			Write-Host "Vortex is not installed in the default location. Please paste the location of your vortex executable. It should end in Vortex.exe"
+			$VortexExecutableLocation = Read-Host -Prompt "Paste Here"
 
-            # Trim so the command gets executed properly
-            $VortexExecutableLocation = $VortexExecutableLocation.Trim('"')
-        }
+			# Trim so the command gets executed properly
+			$VortexExecutableLocation = $VortexExecutableLocation.Trim('"')
+		}
 
-        Write-Host ""
-        Write-Host "The text below is text ouput by Vortex. You can ignore most of it, just look for text that says `"changed`""
-        &$VortexExecutableLocation --set settings.interface.currentTheme=$ThemeName | Out-String
-    }
-    Else {
-        Write-Host ""
-        Write-Host "In Vortex, make sure to go to your theme settings and change the theme to be the name that you gave the theme: $ThemeName"
-        Write-Host "For the changes you made to take effect you must do this"
-    }
+		Write-Host ""
+		Write-Host "The text below is text ouput by Vortex. You can ignore most of it, just look for text that says `"changed`""
+		&$VortexExecutableLocation --set settings.interface.currentTheme=$ThemeName | Out-String
+	}
+	Else {
+		Write-Host ""
+		Write-Host "In Vortex, make sure to go to your theme settings and change the theme to be the name that you gave the theme: $ThemeName"
+		Write-Host "For the changes you made to take effect you must do this"
+	}
 
-    Write-Host ""
-    Write-Host "Hit the red X or the Enter key"
-    Write-Host "Have a good day :)"
-    Read-Host
+	Write-Host ""
+	Write-Host "Hit the red X or the Enter key"
+	Write-Host "Have a good day :)"
+	Read-Host
 
-} else {
-    Write-Host "If you see this text, it means you do not have a vortex themes folder, even though the script tried to create one, and something is wrong"
-    Write-Host "If you know you do have one (please check), report it to me on nexus with details!"
+}
+else {
+	Write-Host "If you see this text, it means you do not have a vortex themes folder, even though the script tried to create one, and something is wrong"
+	Write-Host "If you know you do have one (please check), report it to me on nexus with details!"
 }
