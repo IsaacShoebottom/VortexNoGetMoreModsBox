@@ -1,5 +1,5 @@
-# Remove annoyance script v1.2.4
-# For Vortex 1.5.4 to 1.6.8
+# Remove annoyance script v1.2.5
+# For Vortex 1.5.4 to 1.6.8 (or later)
 # Converted to executable with ps2exe (WIN-PS2EXE) (https://github.com/MScholtes/PS2EXE)
 
 # Compact Style String
@@ -329,13 +329,13 @@ $NetworkInstallChoice = Read-Host -prompt "Would you like to use a networked ins
         $ThemeDummyFile = Invoke-WebRequest 'https://raw.githubusercontent.com/Nexus-Mods/extension-theme-switcher/master/themes/default/dummy.txt' | Select-Object -Expand Content
 
         #Mods Remover
-        $MoreModsRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/MoreModsRemover.css' | Select-Object -Expand Content
+        $MoreModsRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/MoreModsRemover.css' | Select-Object -Expand Content
 
         #Remove Nag/Ads
-        $NagRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/NagRemover.css' | Select-Object -Expand Content
+        $NagRemover = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/NagRemover.css' | Select-Object -Expand Content
 
         #Remove Collection
-        $RemoveCollections = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/main/Stylesheets/RemoveCollection.css' | Select-Object -Expand Content
+        $RemoveCollections = Invoke-WebRequest 'https://raw.githubusercontent.com/Glaceon575/VortexNoGetMoreModsBox/master/Stylesheets/RemoveCollection.css' | Select-Object -Expand Content
     }
 
 
@@ -451,12 +451,40 @@ if (Test-Path -path $VortexThemeFolder) {
         Write-Host $RemoveCollections
         $RemoveCollections | Out-File -FilePath $ThemeStyleFile -Append -Encoding UTF8
     }
-        
+
     Write-Host ""
+    Write-Host "Finally, would you like to try and automatically set the selected theme as the default theme?"
+    $AutoSetThemeSelection = Read-Host -prompt "(Y/N) or (y/n)"
+
+    If ($AutoSetThemeSelection -eq "Y" -or $AutoSetThemeSelection -eq "y") {
+        $VortexExecutableLocation = "C:\Program Files\Black Tree Gaming Ltd\Vortex\Vortex.exe"
+        $VortexDefaultLocation = Test-Path -Path $VortexExecutableLocation -PathType Leaf
+
+        If (!$VortexDefaultLocation) {
+            Write-Host ""
+            Write-Host "Vortex is not installed in the default location. Please paste the location of your vortex executable. It should end in Vortex.exe"
+            $VortexExecutableLocation = Read-Host -Prompt "Paste Here"
+
+            # Trim so the command gets executed properly
+            $VortexExecutableLocation = $VortexExecutableLocation.Trim('"')
+        }
+
+        Write-Host ""
+        Write-Host "The text below is text ouput by Vortex. You can ignore most of it, just look for text that says `"changed`""
+        &$VortexExecutableLocation --set settings.interface.currentTheme=$ThemeName | Out-String
+    }
+    Else {
+        Write-Host ""
+        Write-Host "In Vortex, make sure to go to your theme settings and change the theme to be the name that you gave the theme: $ThemeName"
+        Write-Host "For the changes you made to take effect you must do this"
+    }
+
+    Write-Host ""
+    Write-Host "Hit the red X or the Enter key"
     Write-Host "Have a good day :)"
-    Write-Host "Hit X or Enter"
     Read-Host
 
 } else {
-    Write-Host "If you see this text, report it to me on nexus with details!"
+    Write-Host "If you see this text, it means you do not have a vortex themes folder, even though the script tried to create one, and something is wrong"
+    Write-Host "If you know you do have one (please check), report it to me on nexus with details!"
 }
