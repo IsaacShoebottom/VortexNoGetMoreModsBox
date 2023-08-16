@@ -1,0 +1,3 @@
+Find way to make script run on each change of the theme repo and generate artifacts for me to upload
+
+Find a way to use a css import rule to keep things up to date, would requite me to set up a repo that compiles the css and then I can import it into the theme over the web
